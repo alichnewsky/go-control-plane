@@ -15,7 +15,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"google.golang.org/protobuf/types/known/anypb"
+	"github.com/golang/protobuf/ptypes"
 
 	v4alpha "github.com/envoyproxy/go-control-plane/envoy/config/cluster/v4alpha"
 )
@@ -32,7 +32,7 @@ var (
 	_ = time.Duration(0)
 	_ = (*url.URL)(nil)
 	_ = (*mail.Address)(nil)
-	_ = anypb.Any{}
+	_ = ptypes.DynamicAny{}
 
 	_ = v4alpha.Cluster_DnsLookupFamily(0)
 )
@@ -137,7 +137,7 @@ func (m *DnsCacheConfig) Validate() error {
 	}
 
 	if d := m.GetDnsRefreshRate(); d != nil {
-		dur, err := d.AsDuration(), d.CheckValid()
+		dur, err := ptypes.Duration(d)
 		if err != nil {
 			return DnsCacheConfigValidationError{
 				field:  "DnsRefreshRate",
@@ -158,7 +158,7 @@ func (m *DnsCacheConfig) Validate() error {
 	}
 
 	if d := m.GetHostTtl(); d != nil {
-		dur, err := d.AsDuration(), d.CheckValid()
+		dur, err := ptypes.Duration(d)
 		if err != nil {
 			return DnsCacheConfigValidationError{
 				field:  "HostTtl",

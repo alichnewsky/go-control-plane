@@ -15,7 +15,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"google.golang.org/protobuf/types/known/anypb"
+	"github.com/golang/protobuf/ptypes"
 )
 
 // ensure the imports are used
@@ -30,7 +30,7 @@ var (
 	_ = time.Duration(0)
 	_ = (*url.URL)(nil)
 	_ = (*mail.Address)(nil)
-	_ = anypb.Any{}
+	_ = ptypes.DynamicAny{}
 )
 
 // Validate checks the field values on QuicProtocolOptions with the rules
@@ -90,26 +90,6 @@ func (m *QuicProtocolOptions) Validate() error {
 			}
 		}
 
-	}
-
-	if v, ok := interface{}(m.GetCryptoStreamConfig()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return QuicProtocolOptionsValidationError{
-				field:  "CryptoStreamConfig",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
-	if v, ok := interface{}(m.GetProofSourceConfig()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return QuicProtocolOptionsValidationError{
-				field:  "ProofSourceConfig",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
 	}
 
 	return nil
